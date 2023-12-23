@@ -2,7 +2,7 @@ package test;
 
 import java.util.Scanner;
 
-public class TestDungeonGame {
+public class DungeonGame {
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
@@ -15,12 +15,29 @@ public class TestDungeonGame {
 		int adventurerRow = scanner.nextInt();
 		int adventurerColumn = scanner.nextInt();
 
+		System.out.print("Position of monster: ");
+		int monsterRow = scanner.nextInt();
+		int monsterColumn = scanner.nextInt();
+
 		System.out.print("Position of gold: ");
 		int goldRow = scanner.nextInt();
 		int goldColumn = scanner.nextInt();
 
-		int steps = Math.abs(adventurerRow - goldRow) + Math.abs(adventurerColumn - goldColumn);
+		String result = calculateResult(rows, columns, adventurerRow, adventurerColumn, monsterRow, monsterColumn,
+				goldRow, goldColumn);
 
-		System.out.println("Minimum number of steps: " + steps);
+		System.out.println(result);
+	}
+
+	private static String calculateResult(int rows, int columns, int adventurerRow, int adventurerColumn,
+			int monsterRow, int monsterColumn, int goldRow, int goldColumn) {
+		int adventurerSteps = Math.abs(adventurerRow - goldRow) + Math.abs(adventurerColumn - goldColumn);
+		int monsterSteps = Math.abs(monsterRow - goldRow) + Math.abs(monsterColumn - goldColumn);
+
+		if (adventurerSteps <= monsterSteps) {
+			return "Minimum number of steps: " + adventurerSteps;
+		} else {
+			return "No possible solution";
+		}
 	}
 }
