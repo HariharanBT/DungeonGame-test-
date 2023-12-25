@@ -10,50 +10,38 @@ public class DungeonGame {
 		System.out.print("Dimensions of the dungeon (Row x Column): ");
 		int rows = scanner.nextInt();
 		int columns = scanner.nextInt();
-
 		System.out.print("Position of adventurer: ");
 		int adventurerRow = scanner.nextInt();
 		int adventurerColumn = scanner.nextInt();
-
 		System.out.print("Position of monster: ");
 		int monsterRow = scanner.nextInt();
 		int monsterColumn = scanner.nextInt();
-
+		System.out.print("Position of trigger: ");
+		int triggerRow = scanner.nextInt();
+		int triggerColumn = scanner.nextInt();
 		System.out.print("Position of gold: ");
 		int goldRow = scanner.nextInt();
 		int goldColumn = scanner.nextInt();
 
-		calculateResult(rows, columns, adventurerRow, adventurerColumn, monsterRow, monsterColumn, goldRow, goldColumn);
-	}
+		int adventureMinimumSteps = Math.abs(adventurerRow - goldRow) + Math.abs(adventurerColumn - goldColumn);
+		int monsterMinimumSteps = Math.abs(monsterRow - goldRow) + Math.abs(monsterColumn - goldColumn);
 
-	private static void calculateResult(int rows, int columns, int adventurerRow, int adventurerColumn, int monsterRow,
-			int monsterColumn, int goldRow, int goldColumn) {
-		int adventurerSteps = Math.abs(adventurerRow - goldRow) + Math.abs(adventurerColumn - goldColumn);
-		int monsterSteps = Math.abs(monsterRow - goldRow) + Math.abs(monsterColumn - goldColumn);
-
-		if (adventurerSteps <= monsterSteps) {
-			System.out.println("Minimum number of steps: " + adventurerSteps);
-			printPath(adventurerRow, adventurerColumn, goldRow, goldColumn);
+		if (adventureMinimumSteps > monsterMinimumSteps) {
+			int stepsToTrigger = Math.abs(adventurerRow - triggerRow) + Math.abs(adventurerColumn - triggerColumn);
+			int stepsAfterTrigger = Math.abs(triggerRow - goldRow) + Math.abs(triggerColumn - goldColumn);
+			int totalSteps = stepsToTrigger + stepsAfterTrigger;
+			System.out.println("Minimum number of steps is  : " + totalSteps);
 		} else {
-			System.out.println("No possible solution");
+			int steps = calculateMinimumSteps(rows, columns, adventurerRow, adventurerColumn, monsterRow, monsterColumn,
+					triggerRow, triggerColumn, goldRow, goldColumn);
+			System.out.println("Minimum number of steps: " + steps);
 		}
 	}
 
-	private static void printPath(int adventurerRow, int adventurerColumn, int goldRow, int goldColumn) {
-		System.out.print("Path: (" + adventurerRow + "," + adventurerColumn + ")");
-		while (adventurerRow != goldRow || adventurerColumn != goldColumn) {
-			if (adventurerRow < goldRow) {
-				adventurerRow++;
-			} else if (adventurerRow > goldRow) {
-				adventurerRow--;
-			}
-			if (adventurerColumn < goldColumn) {
-				adventurerColumn++;
-			} else if (adventurerColumn > goldColumn) {
-				adventurerColumn--;
-			}
-			System.out.print(" -> (" + adventurerRow + "," + adventurerColumn + ")");
-		}
-		System.out.println();
+	private static int calculateMinimumSteps(int rows, int columns, int adventurerRow, int adventurerColumn,
+			int monsterRow, int monsterColumn, int triggerRow, int triggerColumn, int goldRow, int goldColumn) {
+		int stepsToTrigger = Math.abs(adventurerRow - triggerRow) + Math.abs(adventurerColumn - triggerColumn);
+		int stepsAfterTrigger = Math.abs(triggerRow - goldRow) + Math.abs(triggerColumn - goldColumn);
+		return stepsToTrigger + stepsAfterTrigger;
 	}
 }
